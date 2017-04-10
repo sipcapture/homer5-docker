@@ -17,7 +17,8 @@ RUN a2enmod php5
 # HOMER 5
 ENV HOMER_VERSION_CACHE_BUSTER arbitrary_value_0x000000d00d
 
-RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api && git checkout 5cc1bac9187e2d6413cbf8f28b37747ce364b373 && cd /
+#RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api && git checkout 5cc1bac9187e2d6413cbf8f28b37747ce364b373 && cd /
+RUN git clone https://github.com/davidcsi/homer-api.git /homer-api && cd /homer-api && git checkout comp_asr && cd /
 RUN git clone https://github.com/sipcapture/homer-ui.git /homer-ui && cd /homer-ui && git checkout 0e0805fe84a3937001c3e57d36ee4031b35c8083 && cd /
 
 WORKDIR /
