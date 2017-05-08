@@ -25,7 +25,7 @@ ENV MYSQL_MAJOR 5.6
 ENV MYSQL_VERSION 5.6.27
 RUN echo "deb http://repo.mysql.com/apt/debian/ jessie mysql-${MYSQL_MAJOR}" > /etc/apt/sources.list.d/mysql.list
 
-RUN apt-get update && apt-get install -y mysql-server-5.6 libmysqlclient18 && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get install -y mysql-server libmysqlclient18 && rm -rf /var/lib/apt/lists/* \
 	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql
 
 # comment out a few problematic configuration values
