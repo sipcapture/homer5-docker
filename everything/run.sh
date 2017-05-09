@@ -71,9 +71,9 @@ PATH_HOMER_CONFIG=/var/www/html/api/configuration.php
 chmod 775 $PATH_HOMER_CONFIG
 
 # Replace values in template
-perl -p -i -e "s/\{\{ DB_PASSWORD \}\}/$DB_PASS/" $PATH_HOMER_CONFIG
-perl -p -i -e "s/\{\{ DB_HOSTNAME \}\}/$DB_HOST/" $PATH_HOMER_CONFIG
-perl -p -i -e "s/\{\{ DB_USERNAME \}\}/$DB_USER/" $PATH_HOMER_CONFIG
+perl -p -i -e "s/\{\{ DB_PASS \}\}/$DB_PASS/" $PATH_HOMER_CONFIG
+perl -p -i -e "s/\{\{ DB_HOST \}\}/$DB_HOST/" $PATH_HOMER_CONFIG
+perl -p -i -e "s/\{\{ DB_USER \}\}/$DB_USER/" $PATH_HOMER_CONFIG
 
 # Set Permissions for webapp
 mkdir /var/www/html/api/tmp
