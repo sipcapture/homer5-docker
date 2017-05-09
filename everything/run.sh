@@ -86,8 +86,8 @@ perl -p -i -e "s/sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES/sql_mode=NO
 sed '/\[mysqld\]/a max_connections = 1024\' -i $PATH_MYSQL_CONFIG
 
 
-# MYSQL SETUP
-SQL_LOCATION=/homer-api/sql
+# MYSQL SETUP (postgres doesn't appear to be supported in this script although is available?)
+SQL_LOCATION=/homer-api/sql/mysql
 DATADIR=/var/lib/mysql
 
 # Handy-dandy MySQL run function
@@ -96,13 +96,23 @@ function MYSQL_RUN () {
   chown -R mysql:mysql "$DATADIR"    
 
   echo 'Starting mysqld'
-  mysqld &
+  mysqld --user=mysql &
   #echo 'Waiting for mysqld to come online'
   while [ ! -x /var/run/mysqld/mysqld.sock ]; do
       sleep 1
   done
 
 }
+
+# MySQL update user/pass data in .sql prior to creating db
+  echo "Updating SQL scripts..."
+  perl -p -i -e "s/homer_user/$DB_USER/" $SQL_LOCATION/homer_user.sql
+  perl -p -i -e "s/homer_password/$DB_PASS/" $SQL_LOCATION/homer_user.sql
+
+# this change is probably not necessary
+  perl -p -i -e "s/homer_user/$DB_USER/" $SQL_LOCATION/schema_configuration.sql
+  perl -p -i -e "s/mysql_password/$DB_PASS/" $SQL_LOCATION/schema_configuration.sql
+
 
 # MySQL data loading function
 function MYSQL_INITIAL_DATA_LOAD () {
@@ -151,18 +161,25 @@ if [ "$DB_HOST" == "$DOCK_IP" ]; then
     fi
 
     # Reconfigure rotation
-    export PATH_ROTATION_SCRIPT=/opt/homer_rotate
+    export PATH_ROTATION_CONFIG=/opt/rotation.ini
+
+    perl -p -i -e "s/homer_user/$DB_USER/" $PATH_ROTATION_CONFIG
+    perl -p -i -e "s/homer_password/$DB_PASS/" $PATH_ROTATION_CONFIG
+    perl -p -i -e "s/localhost/$DB_HOST/" $PATH_ROTATION_CONFIG
+
+    export PATH_ROTATION_SCRIPT=/opt/homer_mysql_rotate.pl
     chmod 775 $PATH_ROTATION_SCRIPT
     chmod +x $PATH_ROTATION_SCRIPT
     perl -p -i -e "s/homer_user/$DB_USER/" $PATH_ROTATION_SCRIPT
     perl -p -i -e "s/homer_password/$DB_PASS/" $PATH_ROTATION_SCRIPT
     # Init rotation
-    /opt/homer_rotate > /dev/null 2>&1
-    
+    $PATH_ROTATION_SCRIPT > /dev/null 2>&1
+
     # Start the cron service in the background for rotation
     cron -f &
 
 fi
+
 
 # KAMAILIO CONFIG
 export PATH_KAMAILIO_CFG=/etc/kamailio/kamailio.cfg
@@ -187,7 +204,7 @@ kamailio=$(which kamailio)
 $kamailio -f $PATH_KAMAILIO_CFG -c
 
 #enable apache mod_php and mod_rewrite
-a2enmod php5
+#a2enmod php5
 a2enmod rewrite 
 
 # Start Apache
