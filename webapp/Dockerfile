@@ -6,7 +6,7 @@ MAINTAINER L. Mangani <lorenzo.mangani@gmail.com>
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV BUILD_DATE 2016-04-25
+ENV BUILD_DATE 2017-02-13
 
 # Update and upgrade apt
 RUN apt-get update -qq
@@ -17,13 +17,13 @@ RUN a2enmod php5
 # HOMER 5
 ENV HOMER_VERSION_CACHE_BUSTER arbitrary_value_0x000000d00d
 
-RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api && git checkout 5cc1bac9187e2d6413cbf8f28b37747ce364b373 && cd /
-RUN git clone https://github.com/sipcapture/homer-ui.git /homer-ui && cd /homer-ui && git checkout 0e0805fe84a3937001c3e57d36ee4031b35c8083 && cd /
+RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api 
+RUN git clone https://github.com/sipcapture/homer-ui.git /homer-ui && cd /homer-ui 
 
 WORKDIR /
 
-RUN chmod -R +x /homer-api/scripts/*
-RUN cp -R /homer-api/scripts/. /opt/
+RUN chmod -R +x /homer-api/scripts/mysql/*
+RUN cp -R /homer-api/scripts/mysql/. /opt/
 
 RUN cp -R /homer-ui/* /var/www/html/
 RUN cp -R /homer-api/api /var/www/html/

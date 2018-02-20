@@ -65,7 +65,7 @@ define('LDAP_USERNAME_ATTRIBUTE_CLOSE',"");
 define('LDAP_USERLEVEL',3); 
 */
 
-define('RTCP_TABLE_PARTITION', 0);
+define('RTCP_TABLE_PARTITION', 1);
 define('SYSLOG_ENABLE',0);
 
 ?>
