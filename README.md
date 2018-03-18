@@ -56,7 +56,7 @@ $ docker-compose up -d
 
 There's a `homer.env` file with environment variables in the root of the clone, which by default should work just fine. 
 
-For example you may choose to use a remote mysql host rather than have the one contained herein, if that is so, change the `USE_REMOTE_MYSQL` to false, and specify the `DB_HOST` as 
+For example you may choose to use a remote mysql host rather than have the one contained herein, if that is so, change the `USE_REMOTE_MYSQL` to true, and specify the `DB_HOST` as 
 
 It is recommended to change the MySQL and homer passwords in your own setup, especially in production.
 
