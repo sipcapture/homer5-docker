@@ -1,5 +1,7 @@
-Homer 5, heplify-server, TICK Stack
+Homer 7, heplify-server, TICK Stack
 ========
+
+#### BETA VERSION! PLEASE REPORT BUGS AND IMPROVEMENTS
 
 ## Setup
 
