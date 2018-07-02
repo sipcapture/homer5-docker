@@ -1,8 +1,8 @@
-Homer7, heplify-server, Prometheus, Grafana Stack
+# Homer7, heplify-server, Prometheus, Grafana Stack
 
 #### BETA VERSION! PLEASE REPORT BUGS AND IMPROVEMENTS
 
-========
+--------
 
 ## Setup
 
