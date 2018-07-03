@@ -128,6 +128,7 @@ services:
       - "HEPLIFYSERVER_PROMADDR=0.0.0.0:9096"
       - "HEPLIFYSERVER_PROMTARGETIP="
       - "HEPLIFYSERVER_PROMTARGETNAME="
+      - "HEPLIFYSERVER_DBDROPDAYS=7"
     restart: unless-stopped
     expose:
       - 9090
