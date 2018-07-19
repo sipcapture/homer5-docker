@@ -19,22 +19,6 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
-  db:
-    image: postgres:10
-    environment:
-      POSTGRES_PASSWORD: homerSeven
-      POSTGRES_USER: root
-    expose:
-      - 5432
-    restart: unless-stopped
-    volumes:
-      - ./conf/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-    healthcheck:
-      test: ["CMD-SHELL", "psql -h 'localhost' -U 'root' -c '\\l'"]
-      interval: 1s
-      timeout: 3s
-      retries: 30
-
   heplify-server:
     image: sipcapture/heplify-server:latest
     container_name: heplify-server
@@ -45,40 +29,21 @@ services:
       - './heplify-server'
     environment:
       - "HEPLIFYSERVER_HEPADDR=0.0.0.0:9060"
-      - "HEPLIFYSERVER_DBDRIVER=postgres"
       - "HEPLIFYSERVER_DBSHEMA=homer7"
-      - "HEPLIFYSERVER_DBADDR=db:5432"
-      - "HEPLIFYSERVER_DBUSER=root"
-      - "HEPLIFYSERVER_DBPASS=homerSeven"
-      - "HEPLIFYSERVER_DBDATATABLE=homer_data"
+      - "HEPLIFYSERVER_DBADDR=''"
       - "HEPLIFYSERVER_LOGLVL=info"
       - "HEPLIFYSERVER_LOGSTD=true"
       - "HEPLIFYSERVER_PROMADDR=0.0.0.0:9096"
       - "HEPLIFYSERVER_PROMTARGETIP="
       - "HEPLIFYSERVER_PROMTARGETNAME="
-      - "HEPLIFYSERVER_DBDROPDAYS=7"
+      - "HEPLIFYSERVER_ESADDR=http://elasticsearch:9200"
     restart: unless-stopped
     expose:
       - 9090
-    depends_on:
-     db:
-       condition: service_healthy
     labels:
       org.label-schema.group: "monitoring"
-
-  homer-webapp:
-    container_name: homer-webapp
-    image: sipcapture/homer-app:master
-    environment:
-      - "DB_HOST=db"
-      - "DB_USER=root"
-      - "DB_PASS=homerSeven"
-    expose:
-      - 8001
-    restart: unless-stopped
     depends_on:
-      db:
-        condition: service_healthy
+      - elasticsearch
 
   telegraf:
     image: telegraf:1.5-alpine
