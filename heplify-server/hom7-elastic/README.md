@@ -5,7 +5,8 @@ Homer Elastic
 
 This recipe will bring up a headless HOMER bundle, with both data and statistics stored to Elasticsearch.
 
-A Kibana [kibana export](https://raw.githubusercontent.com/sipcapture/homer-docker/master/heplify-server/hom7-elastic/conf/kibana-import.json) is provided to sample basic dashboard features and build new ones.
+A Kibana [preset kit](https://raw.githubusercontent.com/sipcapture/homer-docker/master/heplify-server/hom7-elastic/conf/kibana-import.json) is provided and ready for manual <img src="https://i.imgur.com/qlrOlq9.png" width=80 valign=middle />
+
 
 <img src="https://i.imgur.com/O1JQkRt.png" width=600 />
 
