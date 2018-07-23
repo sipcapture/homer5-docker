@@ -14,6 +14,9 @@ A Kibana [preset kit](https://raw.githubusercontent.com/sipcapture/homer-docker/
 
 <img src="https://i.imgur.com/kAgqZE3.png" width=600 />
 
+<img src="https://user-images.githubusercontent.com/1423657/43084057-3444292a-8e98-11e8-947b-edc2db3cbe9b.gif" width=600 />
+
+
 ## Setup
 
 ```bash
