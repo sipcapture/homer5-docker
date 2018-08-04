@@ -77,4 +77,3 @@ define('LDAP_USERLEVEL',3);
 define('RTCP_TABLE_PARTITION', 1);
 
 ?>
-
