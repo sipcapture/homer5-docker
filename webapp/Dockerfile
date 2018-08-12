@@ -6,7 +6,7 @@ MAINTAINER L. Mangani <lorenzo.mangani@gmail.com>
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV BUILD_DATE 2017-02-13
+ENV BUILD_DATE 2018-08-12
 
 # Update and upgrade apt
 RUN apt-get update -qq
