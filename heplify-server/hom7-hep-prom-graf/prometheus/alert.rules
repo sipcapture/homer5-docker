@@ -53,8 +53,8 @@ groups:
 - name: heplify-server
   rules:
   - alert: sip_50x_error
-    expr: rate(heplify_method_response{method=~"INVITE|REGISTER", response=~"50.*"}[1m]) > 0.40
-    for: 5m
+    expr: rate(heplify_method_response{method=~"INVITE|REGISTER", response=~"50.*"}[1m]) > 0
+    for: 1m
     labels:
       severity: warning
     annotations:
