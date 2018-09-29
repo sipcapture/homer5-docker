@@ -121,6 +121,8 @@ services:
       - './heplify-server'
     environment:
       - "HEPLIFYSERVER_HEPADDR=0.0.0.0:9060"
+      - "HEPLIFYSERVER_HEPTLSADDR=0.0.0.0:9060"
+      - "HEPLIFYSERVER_HEPTCPADDR="
       - "HEPLIFYSERVER_DBDRIVER=postgres"
       - "HEPLIFYSERVER_DBSHEMA=homer7"
       - "HEPLIFYSERVER_DBADDR=db:5432"
