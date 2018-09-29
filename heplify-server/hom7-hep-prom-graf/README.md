@@ -12,11 +12,11 @@ docker-compose up
 
 to bring up:  
 
-* Adminer localhost:8080 (root/homerSeven) //select system->PostgresSQL
-* Homer localhost:9080 (admin/sipcapture) 
-* Prometheus localhost:9090 (admin/admin)
-* Alertmanager localhost:9093 (admin/admin)
-* Grafana localhost:3000 (admin/admin)
+* [Adminer]      localhost:8080 (root/homerSeven) //select System->PostgresSQL
+* [Homer]        localhost:9080 (admin/sipcapture)
+* [Grafana]      localhost:3000 (admin/admin)
+* [Prometheus]   localhost:9090 (admin/admin)
+* [Alertmanager] localhost:9093 (admin/admin)
 
 When the Grafana dashboard autoprovisioning does not work for you make sure you have no old grafana volumes.
 
