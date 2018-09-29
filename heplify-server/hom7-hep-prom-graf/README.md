@@ -12,7 +12,7 @@ docker-compose up
 
 to bring up:  
 
-* Adminer localhost:8080 (root/) empty password
+* Adminer localhost:8080 (root/homerSeven) //select system->PostgresSQL
 * Homer localhost:9080 (admin/sipcapture) 
 * Prometheus localhost:9090 (admin/admin)
 * Alertmanager localhost:9093 (admin/admin)
