@@ -151,8 +151,6 @@ services:
       - "DB_HOST=db"
       - "DB_USER=root"
       - "DB_PASS=homerSeven"
-    expose:
-      - 8001
     restart: unless-stopped
     depends_on:
       db:
