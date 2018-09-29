@@ -91,7 +91,7 @@ services:
       org.label-schema.group: "monitoring"
 
   db:
-    image: postgres:10
+    image: postgres:10-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: homerSeven
@@ -99,8 +99,6 @@ services:
     expose:
       - 5432
     restart: unless-stopped
-    volumes:
-      - ./conf/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
     healthcheck:
       test: ["CMD-SHELL", "psql -h 'localhost' -U 'root' -c '\\l'"]
       interval: 1s
@@ -123,12 +121,14 @@ services:
       - "HEPLIFYSERVER_DBUSER=root"
       - "HEPLIFYSERVER_DBPASS=homerSeven"
       - "HEPLIFYSERVER_DBDATATABLE=homer_data"
+      - "HEPLIFYSERVER_DBCONFTABLE=homer_config"
       - "HEPLIFYSERVER_LOGLVL=info"
       - "HEPLIFYSERVER_LOGSTD=true"
       - "HEPLIFYSERVER_PROMADDR=0.0.0.0:9096"
       - "HEPLIFYSERVER_PROMTARGETIP="
       - "HEPLIFYSERVER_PROMTARGETNAME="
       - "HEPLIFYSERVER_DBDROPDAYS=7"
+      - "HEPLIFYSERVER_DEDUP=false"
     restart: unless-stopped
     expose:
       - 9090
