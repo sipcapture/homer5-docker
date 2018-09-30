@@ -6,10 +6,7 @@ services:
     image: stefanprodan/caddy
     container_name: caddy
     ports:
-      - "3000:3000"
       - "9090:9090"
-      - "9093:9093"
-      - "9080:9080"
     volumes:
       - ./caddy/:/etc/caddy/
     environment:
@@ -29,6 +26,8 @@ services:
       - './heplify-server'
     environment:
       - "HEPLIFYSERVER_HEPADDR=0.0.0.0:9060"
+      - "HEPLIFYSERVER_HEPTLSADDR=0.0.0.0:9060"
+      - "HEPLIFYSERVER_HEPTCPADDR="
       - "HEPLIFYSERVER_DBSHEMA=homer7"
       - "HEPLIFYSERVER_DBADDR=''"
       - "HEPLIFYSERVER_LOGLVL=info"
@@ -37,6 +36,7 @@ services:
       - "HEPLIFYSERVER_PROMTARGETIP="
       - "HEPLIFYSERVER_PROMTARGETNAME="
       - "HEPLIFYSERVER_ESADDR=http://elasticsearch:9200"
+      - "HEPLIFYSERVER_DEDUP=false"
     restart: unless-stopped
     expose:
       - 9090
