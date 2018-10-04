@@ -20,7 +20,7 @@ services:
       org.label-schema.group: "monitoring"
 
   db:
-    image: postgres:10
+    image: postgres:10-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: homerSeven
