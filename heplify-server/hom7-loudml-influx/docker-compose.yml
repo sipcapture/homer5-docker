@@ -128,6 +128,11 @@ services:
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+      KAPACITOR_LOAD_DIR: /var/lib/kapacitor/load
+      KAPACITOR_LOAD_ENABLED: 'true'
+    volumes:
+      - ./conf/diffs.tick:/var/lib/kapacitor/load/tasks/diffs.tick
+      - ./conf/kapacitor.conf:/etc/kapacitor/kapacitor.conf
     links:
       - influxdb
     expose:
