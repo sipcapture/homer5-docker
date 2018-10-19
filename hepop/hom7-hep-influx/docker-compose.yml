@@ -80,7 +80,7 @@ services:
         condition: service_healthy
 
   telegraf:
-    image: telegraf:1.5-alpine
+    image: telegraf:1.8-alpine
     restart: unless-stopped
     volumes:
       - ./conf/telegraf.conf:/etc/telegraf/telegraf.conf
@@ -91,14 +91,14 @@ services:
       - heplify-server
 
   influxdb:
-    image: influxdb:1.5-alpine
+    image: influxdb:1.6-alpine
     volumes:
       - ./influx:/var/lib/influxdb
     expose:
       - 8086
 
   chronograf:
-    image: chronograf:1.5-alpine
+    image: chronograf:1.6
     environment:
       INFLUXDB_URL: http://influxdb:8086
       KAPACITOR_URL: http://kapacitor:9092
