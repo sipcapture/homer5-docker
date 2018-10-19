@@ -55,7 +55,7 @@ services:
       PGSQL_PASSWORD: homerSeven
       INFLUXDB_HOST: influxdb
       INFLUXDB_PORT: 8086
-      INFLUXDB_DB: hep
+      INFLUXDB_DB: homer
     restart: unless-stopped
     expose:
       - 9090
