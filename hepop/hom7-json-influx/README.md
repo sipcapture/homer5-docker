@@ -2,6 +2,8 @@
 
 **HEPop** is a prototype stand-alone [HEP](https://github.com/sipcapture/hep) Capture Server designed for [HOMER7](https://github.com/sipcapture/homer) capable of emitting indexed datasets and tagged timeseries to multiple backends in bulks. HEPop is developed using `NodeJS` and distributed using `npm`.
 
+![image](https://user-images.githubusercontent.com/1423657/47257858-83201900-d493-11e8-9242-49f5f38854c6.png)
+
 HOMER-App, HEPop JSON, TICK Stack
 ========
 
