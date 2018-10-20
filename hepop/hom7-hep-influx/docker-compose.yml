@@ -47,7 +47,6 @@ services:
       HEPOP_PROTO: udp
       HEPOP_ID: HEPOP_101
       HEPOP_PORT: 9060
-      HEPOP_DEBUG: "true"
       PGSQL_HOST: db
       PGSQL_DBNAME: homer_data
       PGSQL_PORT: 5432
