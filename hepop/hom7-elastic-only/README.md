@@ -3,18 +3,9 @@ Homer Elastic
 
 #### BETA VERSION! PLEASE REPORT BUGS AND IMPROVEMENTS
 
-This recipe will bring up a headless HOMER bundle, with both data and statistics stored to Elasticsearch.
+This recipe will bring up a headless HOMER bundle, shipping RTC Events and Statistics to Elasticsearch.
 
-A Kibana [preset kit](https://raw.githubusercontent.com/sipcapture/homer-docker/master/heplify-server/hom7-elastic/conf/kibana-import.json) is provided and ready for manual <img src="https://i.imgur.com/qlrOlq9.png" width=80 valign=middle />
-
-
-<img src="https://i.imgur.com/O1JQkRt.png" width=600 />
-
-<img src="https://user-images.githubusercontent.com/39862433/42957981-366a966a-8b52-11e8-81fc-a8d386153f1d.png" width=600 />
-
-<img src="https://i.imgur.com/kAgqZE3.png" width=600 />
-
-<img src="https://user-images.githubusercontent.com/1423657/43161289-fbea4168-8f87-11e8-82a0-95d90f00cc21.gif" width=600 />
+#### This recipe is compatible with JANUS and MediaSoup events
 
 
 ## Setup
@@ -25,7 +16,7 @@ docker-compose up
 
 to bring up:  
 
-* HEPlify-server localhost:9060 (hep-only)
+* HEPop localhost:8080 (json-only)
 * Telegraf
 * Kibana localhost:9090 (admin/admin)
 * Elasticsearch (hep-*), (heplify-*)
