@@ -12,8 +12,10 @@ HOMER is all about options and easy integrations. Choose your preferred flavour 
 * [HOMER 7](https://github.com/sipcapture/homer/tree/homer7) _development_
   * [HEPlify-Server](https://github.com/sipcapture/homer-docker/tree/master/heplify-server)
     * [HEPlify + Prometheus ](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-prom-graf)
-    * [HEPlify + InfluxDB ](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-influx) [+LoudML](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-influx)
-    * [HEPlify + Elastic ](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-elastic) [+Headless](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-elastic)
+    * [HEPlify + InfluxDB ](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-influx) 
+    * [HEPlify + InfluxDB + LoudML](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-influx)
+    * [HEPlify + Elastic ](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-hep-elastic) 
+    * [HEPlify + Elastic Headless](https://github.com/sipcapture/homer-docker/tree/master/heplify-server/hom7-elastic)
     
   * [HEPop Server](https://github.com/sipcapture/homer-docker/tree/master/hepop)
     * [HEPop + InfluxDB](https://github.com/sipcapture/homer-docker/tree/master/hepop/hom7-hep-influx)
