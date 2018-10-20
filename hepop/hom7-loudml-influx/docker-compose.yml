@@ -28,6 +28,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./conf/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - ./postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "psql -h 'localhost' -U 'root' -c '\\l'"]
       interval: 1s
