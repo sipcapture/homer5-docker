@@ -20,6 +20,8 @@ HOMER is all about options and easy integrations. Choose your preferred flavour 
   * [HEPop Server](https://github.com/sipcapture/homer-docker/tree/master/hepop)
     * [HEPop + InfluxDB](https://github.com/sipcapture/homer-docker/tree/master/hepop/hom7-hep-influx)
     * [HEPop + InfluxDB + LoudML](https://github.com/sipcapture/homer-docker/tree/master/hepop/hom7-loudml-influx)
+    * [HEPop + InfluxDB + JSON](https://github.com/sipcapture/homer-docker/tree/master/hepop/hom7-json-influx) for Janus/Mediasoup
+    * [HEPop + Elasticsearch + JSON](https://github.com/sipcapture/homer-docker/tree/master/hepop/hom7-elastic-only) for Janus/Mediasoup
 
 
 * [HOMER 5](https://github.com/sipcapture/homer/tree/homer5) _legacy_
