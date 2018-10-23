@@ -33,7 +33,6 @@ services:
       INFLUXDB_HOST: influxdb
       INFLUXDB_PORT: 8094
       INFLUXDB_DB: homer
-      REBUILD: "true"
     restart: unless-stopped
     expose:
       - 8080
