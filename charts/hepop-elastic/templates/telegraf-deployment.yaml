@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: telegraf
+  name: telegraf
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: telegraf
+    spec:
+      containers:
+      - image: telegraf:1.8-alpine
+        name: telegraf
+        ports:
+        - containerPort: 8094
+        resources: {}
+        volumeMounts:
+           - name: telegraf-config-volume
+             mountPath: /etc/telegraf
+      restartPolicy: Always
+      volumes:
+      - name: telegraf-config-volume
+        configMap:
+          name: telegraf-config
+status: {}

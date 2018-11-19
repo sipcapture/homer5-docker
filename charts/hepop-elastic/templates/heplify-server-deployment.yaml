@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: heplify-server
+  name: heplify-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: heplify-server
+    spec:
+      containers:
+      - env:
+        - name: HEPOP_HOST
+          value: 0.0.0.0
+        - name: HEPOP_ID
+          value: HEPOP_101
+        - name: HEPOP_PORT
+          value: "8080"
+        - name: HEPOP_PROTO
+          value: http
+        - name: INFLUXDB_DB
+          value: homer
+        - name: INFLUXDB_HOST
+          value: influxdb
+        - name: INFLUXDB_PORT
+          value: "8094"
+        image: sipcapture/hepop:master
+        name: heplify-server
+        ports:
+        - containerPort: 8080
+        - containerPort: 9060
+        - containerPort: 9060
+          protocol: UDP
+        resources: {}
+        volumeMounts:
+           - name: heplify-server-config-volume
+             mountPath: /app/
+      restartPolicy: Always
+      volumes:
+      - name: heplify-server-config-volume
+        configMap:
+          name: heplify-server-config
+      - name: heplify-server-claim0
+        persistentVolumeClaim:
+          claimName: heplify-server-claim0
+status: {}

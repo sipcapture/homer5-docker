@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: telegraf
+  name: telegraf
+spec:
+  ports:
+  - name: "8094"
+    port: 8094
+    targetPort: 8094
+  selector:
+    io.kompose.service: telegraf
+status:
+  loadBalancer: {}

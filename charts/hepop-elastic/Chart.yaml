@@ -1,0 +1,21 @@
+name: hepop-elastic
+version: 7.0.0
+appVersion: 7.0.0.
+description: Open-Source VoIP and RTC Monitoring
+keywords:
+- homer
+- voip
+- rtc
+- monitoring
+- troubleshooting
+- capture
+- alerting
+- janus
+home: https://sipcapture.org
+icon: http://sipcapture.org/images/logos/preloader-logo.png
+sources:
+- https://github.com/sipcapture/homer
+maintainers:
+- name: QXIP
+  email: info@qxip.net
+engine: gotpl
