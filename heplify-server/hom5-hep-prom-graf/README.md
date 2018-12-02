@@ -7,15 +7,17 @@ Homer5, heplify-server, Prometheus, Grafana Stack
 docker-compose up
 ```
 
-to bring up:  
-
-* Adminer localhost:8080 (root/) empty password
+## User Interfaces 
 * Homer localhost:9080 (admin/test123) 
 * Prometheus localhost:9090 (admin/admin)
 * Alertmanager localhost:9093 (admin/admin)
 * Grafana localhost:3000 (admin/admin)
 
 When the Grafana dashboard autoprovisioning does not work for you make sure you have no old grafana volumes.
+
+## Sockets
+* HEP packet input :9060
+* RTCP-XR phone input :9064
 
 ## Configuration
 
@@ -36,4 +38,4 @@ When you need to change the docker-compose file i.e to setup smtp for Grafana:
 ```bash
 docker-compose up -d
 ```
-Docker will only restart the service you changed inside the docker-compose file. 
+Docker will only restart the service you changed inside the docker-compose file.
