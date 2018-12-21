@@ -41,7 +41,8 @@ spec:
         resources: {}
         volumeMounts:
            - name: heplify-server-config-volume
-             mountPath: /app/
+             mountPath: /app/myconfig.js
+             subPath: myconfig.js
       restartPolicy: Always
       volumes:
       - name: heplify-server-config-volume
