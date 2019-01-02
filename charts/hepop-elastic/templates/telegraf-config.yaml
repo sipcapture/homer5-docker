@@ -53,12 +53,6 @@ data:
       overwrite_template = false
       namedrop = ["go*","process*","promhttp*"]
       fielddrop = ["go*"]
-    [[inputs.socket_listener]]
-      service_address = "udp://127.0.0.1:8094"
-      data_format = "influx"
-    [[inputs.prometheus]]
-      ## An array of urls to scrape metrics from.
-      urls = ["http://heplify-server:9096/metrics"]
     [[inputs.http_listener]]
       ## Address and port to host HTTP listener on
       service_address = ":8094"
