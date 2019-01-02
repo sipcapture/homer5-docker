@@ -2,9 +2,9 @@ apiVersion: v1
 data:
   myconfig.js: |
     {
-      "id" : "HEPop101",
+      "id": "HEPop101",
       "socket": "http",
-      "port": 8080,
+      "port": 8090,
       "address": "0.0.0.0",
       "queue": {
         "timeout": 2000,
@@ -14,9 +14,9 @@ data:
       "dbName": "homer_data",
       "tableName": "hep",
       "db": {
-        "rawSize": 8000,
-        "elastic" : {
-          "target": "http://elasticsearch:9200",
+        "rawSize": 8090,
+        "elastic": {
+          "target": "https://vpc-evercast-development-e2rczi5elp6b5y72jzolxpkf24.us-east-1.es.amazonaws.com:443",
           "max_bulk_qtty": 10,
           "max_request_num": 20,
           "index": "homer"
