@@ -29,12 +29,8 @@ data:
       # %d - day of month (e.g., 01)
       # %H - hour (00..23)
       # %V - week of the year (ISO week) (01..53)
-      ## Additionally, you can specify a tag name using the notation {{tag_name}}
-      ## which will be used as part of the index name. If the tag does not exist,
-      ## the default tag value will be used.
-      # index_name = "telegraf-{{host}}-%Y.%m.%d"
       # default_tag_value = "none"
-      index_name = "hep-%Y.%m.%d" # required.
+      index_name = "hep-%Y.%m.%d"
 
       ## Optional TLS Config
       # tls_ca = "/etc/telegraf/ca.pem"
