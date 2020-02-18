@@ -27,6 +27,7 @@ RUN cp -R /homer-api/scripts/mysql/. /opt/
 
 RUN cp -R /homer-ui/* /var/www/html/
 RUN cp -R /homer-api/api /var/www/html/
+RUN mkdir -p /var/www/html/store/dashboard
 RUN chown -R www-data:www-data /var/www/html/store/
 RUN chmod -R 0775 /var/www/html/store/dashboard
 
