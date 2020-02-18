@@ -1,6 +1,9 @@
 
 <img src=http://i.imgur.com/ViXcGAD.png width=500>
 
+# OBSOLETE
+For the latest `homer` containers please use: https://github.com/sipcapture/homer7-docker
+
 # HOMER Docker Containers
 http://sipcapture.org
 
