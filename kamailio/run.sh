@@ -28,6 +28,7 @@ awk '/max_while_loops=100/{print $0 RS "mpath=\"//usr/lib/x86_64-linux-gnu/kamai
 mv $PATH_KAMAILIO_CFG.tmp $PATH_KAMAILIO_CFG
 
 # Replace values in template
+perl -p -i -e "s/\{\{ CAPTURE_NODE \}\}/$CAPTURE_NODE/" $PATH_KAMAILIO_CFG
 perl -p -i -e "s/\{\{ KAMAILIO_HEP_PORT \}\}/$KAMAILIO_HEP_PORT/" $PATH_KAMAILIO_CFG
 perl -p -i -e "s/\{\{ DB_PASS \}\}/$DB_PASS/" $PATH_KAMAILIO_CFG
 perl -p -i -e "s/\{\{ DB_HOST \}\}/$DB_HOST/" $PATH_KAMAILIO_CFG
