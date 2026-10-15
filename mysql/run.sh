@@ -1,6 +1,12 @@
 #!/bin/bash
 # ----------------------------------------------------
 # HOMER 5 Docker (http://sipcapture.org)
+
+if [ -n "${TZ:-}" ] && [ -f "/usr/share/zoneinfo/${TZ}" ]; then
+  ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime
+  echo "${TZ}" >/etc/timezone
+  export TZ
+fi
 # ----------------------------------------------------
 # -- To facilitate starting (or not starting) MySQL
 # -- based on option to use remote mysql.

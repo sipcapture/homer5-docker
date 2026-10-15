@@ -4,6 +4,17 @@
 # ----------------------------------------------------
 # -- Bootstrap script for Homer's database
 # ----------------------------------------------------
+
+if [ -n "${TZ:-}" ] && [ -f "/usr/share/zoneinfo/${TZ}" ]; then
+  ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime
+  echo "${TZ}" >/etc/timezone
+  export TZ
+fi
+
+if [ "${USE_REMOTE_MYSQL:-false}" = true ] && [ "${DB_HOST:-mysql}" = "mysql" ]; then
+  echo "USE_REMOTE_MYSQL=true but DB_HOST is still 'mysql'. Set DB_HOST to your external MySQL host in homer.env."
+  exit 1
+fi
 # Reads from environment variables to set:
 # MYSQL_ROOT_PASSWORD MySQL root password.
 # DB_PASS             MySQL password (homer_password)

@@ -1,0 +1,17 @@
+# Override for external MySQL (https://github.com/sipcapture/homer5-docker/issues/59)
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.external-mysql.yml up -d
+version: '2'
+services:
+  webapp:
+    depends_on: []
+    links: []
+  cron:
+    depends_on: []
+    links: []
+  kamailio:
+    depends_on: []
+    links: []
+  bootstrap:
+    depends_on:
+      - webapp
+    links: []

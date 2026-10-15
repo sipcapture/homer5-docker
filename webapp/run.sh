@@ -1,5 +1,11 @@
 #!/bin/bash
 # HOMER 5 Docker (http://sipcapture.org)
+
+if [ -n "${TZ:-}" ] && [ -f "/usr/share/zoneinfo/${TZ}" ]; then
+  ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime
+  echo "${TZ}" >/etc/timezone
+  export TZ
+fi
 # ----------------------------------------------------
 # -- Run script for Homer's Web application
 # ----------------------------------------------------

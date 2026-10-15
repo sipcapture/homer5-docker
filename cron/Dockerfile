@@ -17,7 +17,7 @@ RUN a2enmod php5
 # HOMER 5
 ENV HOMER_VERSION_CACHE_BUSTER arbitrary_value_0x000000d00d
 
-RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api 
+RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api && git checkout cae0fe0e999dcc2cc47db08f5a8b616f8800c0f4
 RUN git clone https://github.com/sipcapture/homer-ui.git /homer-ui && cd /homer-ui && git checkout 941954f20c462f89853133424775cce5c48c42ed
 
 WORKDIR /
@@ -39,7 +39,7 @@ VOLUME ["/var/www/html/store"]
 
 # Install the cron service
 RUN touch /var/log/cron.log
-RUN apt-get update -qq && apt-get install cron mysql-client -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get install cron mysql-client tzdata -y && rm -rf /var/lib/apt/lists/*
 
 # Add our crontab file
 RUN echo "30 3 * * * /opt/homer_mysql_rotate.pl >> /var/log/cron.log 2>&1" > /crons.conf
