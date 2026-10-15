@@ -2,15 +2,21 @@
 # HOMER 5 Docker (http://sipcapture.org)
 # run.sh {parameters}
 
-# HOMER Options, defaults
-DB_USER=homer_user
-DB_PASS=homer_password
-DB_HOST="127.0.0.1"
-LISTEN_PORT=9060
+if [ -n "${TZ:-}" ] && [ -f "/usr/share/zoneinfo/${TZ}" ]; then
+  ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime
+  echo "${TZ}" >/etc/timezone
+  export TZ
+fi
+
+# HOMER Options, defaults (CLI flags override env; see issues #20 / #59)
+DB_USER="${DB_USER:-homer_user}"
+DB_PASS="${DB_PASS:-homer_password}"
+DB_HOST="${DB_HOST:-127.0.0.1}"
+LISTEN_PORT="${KAMAILIO_HEP_PORT:-9060}"
 
 # HOMER MySQL Options, defaults
 sqluser=root
-sqlpassword=secret
+sqlpassword="${MYSQL_ROOT_PASSWORD:-secret}"
 
 # Container
 DOCK_IP="127.0.0.1"
@@ -66,6 +72,18 @@ while true; do
   esac
 done
 
+configure_rotation() {
+  export PATH_ROTATION_CONFIG=/opt/rotation.ini
+  perl -p -i -e "s/homer_user/$DB_USER/" $PATH_ROTATION_CONFIG
+  perl -p -i -e "s/homer_password/$DB_PASS/" $PATH_ROTATION_CONFIG
+  perl -p -i -e "s/localhost/$DB_HOST/" $PATH_ROTATION_CONFIG
+  perl -p -i -e 's/\(`session_id`\)/(`session_id`(255))/' /opt/homer_mysql_rotate.pl
+  perl -p -i -e 's/\(`correlation_id`\)/(`correlation_id`(255))/' /opt/homer_mysql_rotate.pl
+  /opt/homer_mysql_rotate.pl >/dev/null 2>&1
+  sed -i 's/^\(session\s\+required\s\+pam_loginuid\.so.*$\)/# \1/g' /etc/pam.d/cron
+  cron -f &
+}
+
 # HOMER API CONFIG
 PATH_HOMER_CONFIG=/var/www/html/api/configuration.php
 chmod 775 $PATH_HOMER_CONFIG
@@ -76,7 +94,7 @@ perl -p -i -e "s/\{\{ DB_HOST \}\}/$DB_HOST/" $PATH_HOMER_CONFIG
 perl -p -i -e "s/\{\{ DB_USER \}\}/$DB_USER/" $PATH_HOMER_CONFIG
 
 # Set Permissions for webapp
-mkdir /var/www/html/api/tmp
+mkdir -p /var/www/html/api/tmp
 chmod -R 0777 /var/www/html/api/tmp/
 chmod -R 0775 /var/www/html/store/dashboard*
 
@@ -97,20 +115,18 @@ function MYSQL_RUN () {
 
   echo 'Starting mysqld'
   /etc/init.d/mysql start
-  #echo 'Waiting for mysqld to come online'
-  while [ ! -x /var/run/mysqld/mysqld.sock ]; do
+  while [ ! -S /var/run/mysqld/mysqld.sock ]; do
       sleep 1
   done
 
 }
 
-# MySQL data loading function
+# MySQL data loading function (embedded/local MySQL)
 function MYSQL_INITIAL_DATA_LOAD () {
   echo "Beginning initial data load...."
 
   chown -R mysql:mysql "$DATADIR"
   mysqld --initialize-insecure=on --user=mysql --datadir="$DATADIR"
-  # mysql_install_db --user=mysql --datadir="$DATADIR"
 
   MYSQL_RUN
 
@@ -124,45 +140,54 @@ function MYSQL_INITIAL_DATA_LOAD () {
   mysql --host "$DB_HOST" -u "$sqluser" homer_configuration < $SQL_LOCATION/schema_configuration.sql
   mysql --host "$DB_HOST" -u "$sqluser" homer_statistic < $SQL_LOCATION/schema_statistic.sql
   
-  # echo "Creating local DB Node..."
-  mysql --host "$DB_HOST" -u "$sqluser" homer_configuration -e "INSERT INTO node VALUES(1,'mysql','homer_data','3306','"$DB_USER"','"$DB_PASS"','sip_capture','node1', 1);"
+  mysql --host "$DB_HOST" -u "$sqluser" homer_configuration -e "REPLACE INTO node VALUES(1,'mysql','homer_data','3306','"$DB_USER"','"$DB_PASS"','sip_capture','node1', 1);"
   
   echo 'Setting root password....'
   mysql -u root -e "SET PASSWORD = PASSWORD('$sqlpassword');" 
 
   echo "Homer initial data load complete" > $DATADIR/.homer_initialized
-
-
 }
 
-# This is our handler to determine if we're running mysql internal to this container
-# We also bootstrap the data by initially loading it if it's not there.
+function MYSQL_REMOTE_BOOTSTRAP () {
+  export MYSQL_PWD=$sqlpassword
+  echo "Waiting for remote MySQL at $DB_HOST..."
+  waited=0
+  while ! mysqladmin -h "$DB_HOST" -u "$sqluser" status &>/dev/null; do
+    sleep 2
+    waited=$((waited + 2))
+    if [ "$waited" -ge 300 ]; then
+      echo "Remote MySQL at $DB_HOST did not become reachable in time."
+      exit 1
+    fi
+  done
 
-if [ "$DB_HOST" == "$DOCK_IP" ]; then
+  databases=$(mysql -h "$DB_HOST" -u "$sqluser" -s -e 'show databases;')
+  if [[ ! "$databases" =~ "homer_data" ]]; then
+    echo "Beginning remote initial data load on $DB_HOST..."
+    mysql --host "$DB_HOST" -u "$sqluser" < $SQL_LOCATION/homer_databases.sql
+    mysql --host "$DB_HOST" -u "$sqluser" < $SQL_LOCATION/homer_user.sql
+    mysql --host "$DB_HOST" -u "$sqluser" -e "GRANT ALL ON *.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS'; FLUSH PRIVILEGES;"
+    export MYSQL_PWD=$DB_PASS
+    mysql --host "$DB_HOST" -u "$DB_USER" homer_data < $SQL_LOCATION/schema_data.sql
+    mysql --host "$DB_HOST" -u "$DB_USER" homer_configuration < $SQL_LOCATION/schema_configuration.sql
+    mysql --host "$DB_HOST" -u "$DB_USER" homer_statistic < $SQL_LOCATION/schema_statistic.sql
+    mysql --host "$DB_HOST" -u "$DB_USER" homer_configuration -e "REPLACE INTO node VALUES(1,'$DB_HOST','homer_data','3306','"$DB_USER"','"$DB_PASS"','sip_capture','node1', 1);"
+  else
+    echo "Remote Homer databases already present on $DB_HOST."
+  fi
+}
 
-    # If we're running an internal container, we want to see if data is already installed...
-    # That is, we don't want to overwrite what's there, or spend the time initializing.
-    # In the initialization we drop a .homer_initialized file as a semaphore, and we load based on its presence.
+if [ "$DB_HOST" = "$DOCK_IP" ]; then
     if [[ ! -f $DATADIR/.homer_initialized ]]; then 
-      # Run the load data function if that table doesn't exist
       MYSQL_INITIAL_DATA_LOAD
     else
       echo "Found existing data..."
       MYSQL_RUN
     fi
-
-    # Reconfigure rotation
-    export PATH_ROTATION_SCRIPT=/opt/homer_mysql_rotate
-    chmod 775 $PATH_ROTATION_SCRIPT
-    chmod +x $PATH_ROTATION_SCRIPT
-    perl -p -i -e "s/homer_user/$DB_USER/" $PATH_ROTATION_SCRIPT
-    perl -p -i -e "s/homer_password/$DB_PASS/" $PATH_ROTATION_SCRIPT
-    # Init rotation
-    /opt/homer_mysql_rotate > /dev/null 2>&1
-    
-    # Start the cron service in the background for rotation
-    cron -f &
-
+    configure_rotation
+else
+    MYSQL_REMOTE_BOOTSTRAP
+    configure_rotation
 fi
 
 # KAMAILIO CONFIG
@@ -171,30 +196,16 @@ export PATH_KAMAILIO_CFG=/etc/kamailio/kamailio.cfg
 awk '/max_while_loops=100/{print $0 RS "mpath=\"//usr/lib/x86_64-linux-gnu/kamailio/modules/\"";next}1' $PATH_KAMAILIO_CFG >> $PATH_KAMAILIO_CFG.tmp | 2&>1 >/dev/null
 mv $PATH_KAMAILIO_CFG.tmp $PATH_KAMAILIO_CFG
 
-# Replace values in template
 perl -p -i -e "s/\{\{ LISTEN_PORT \}\}/$LISTEN_PORT/" $PATH_KAMAILIO_CFG
 perl -p -i -e "s/\{\{ DB_PASS \}\}/$DB_PASS/" $PATH_KAMAILIO_CFG
 perl -p -i -e "s/\{\{ DB_HOST \}\}/$DB_HOST/" $PATH_KAMAILIO_CFG
 perl -p -i -e "s/\{\{ DB_USER \}\}/$DB_USER/" $PATH_KAMAILIO_CFG
 
-# Change kamailio datestamp for sql tables
-# sed -i -e 's/# $var(a) = $var(table) + "_" + $timef(%Y%m%d);/$var(a) = $var(table) + "_" + $timef(%Y%m%d);/' $PATH_KAMAILIO_CFG
-# sed -i -e 's/$var(a) = $var(table) + "_%Y%m%d";/# runscript removed -- $var(a) = $var(table) + "_%Y%m%d";/' $PATH_KAMAILIO_CFG
-
-# Make an alias, kinda.
 kamailio=$(which kamailio)
-
-# Test the syntax.
 $kamailio -f $PATH_KAMAILIO_CFG -c
 
-#enable apache mod_php and mod_rewrite
 a2enmod php5
 a2enmod rewrite 
 
-# Start Apache
-# apachectl -DFOREGROUND
 apachectl start
-
-# It's Homer time!
 $kamailio -f $PATH_KAMAILIO_CFG -DD -E -e
-

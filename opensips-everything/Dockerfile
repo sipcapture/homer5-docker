@@ -59,7 +59,7 @@ RUN apt-get update -qq && apt-get install -f -yqq geoip-database geoip-database-
  && apt-get install cron -y \
 
 # Add our crontab file
- && echo "30 3 * * * /opt/homer_mysql_rotate >> /var/log/cron.log 2>&1" > /etc/cron.d/homer_mysql_rotate.conf \
+ && echo "30 3 * * * /opt/homer_mysql_rotate.pl >> /var/log/cron.log 2>&1" > /etc/cron.d/homer_mysql_rotate.conf \
  && echo "local0.* -/var/log/opensips.log" > /etc/rsyslog.d/opensips.conf 
 
 COPY run.sh /run.sh

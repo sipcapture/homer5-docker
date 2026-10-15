@@ -48,6 +48,14 @@ $ docker-compose up -d
 
 The `docker-compose` scheme will map container data into local directory volumes. Check and extend the provided examples accordingly.
 
+#### Homer 5 compose operations
+
+- **Timezone:** set `TZ` in `homer.env` (for example `Europe/Berlin`). Entrypoint scripts configure `/etc/localtime` at startup ([#55](https://github.com/sipcapture/homer5-docker/issues/55)).
+- **External MySQL:** set `USE_REMOTE_MYSQL=true` and `DB_HOST` to your server hostname or IP (not `mysql`). Start with `docker-compose -f docker-compose.yml -f docker-compose.external-mysql.yml up -d` and omit the bundled `mysql` service ([#59](https://github.com/sipcapture/homer5-docker/issues/59), [#20](https://github.com/sipcapture/homer5-docker/issues/20)).
+- **Single container + remote DB:** use `everything/run.sh` with `--dbhost` or pass `DB_HOST` / `MYSQL_ROOT_PASSWORD` as environment variables; remote schemas are bootstrapped when missing ([#20](https://github.com/sipcapture/homer5-docker/issues/20)).
+- **Kamailio listen address:** `udp: 0.0.0.0:9060` in logs means the HEP socket listens on all interfaces inside the container; publish port `9060` in compose and point agents at the host IP ([#91](https://github.com/sipcapture/homer5-docker/issues/91)).
+- **Homer 7 / HEPv2:** HEPlify Server in this tree expects HEPv3. Legacy Kamailio 4.4 HEPv2 senders need a HEPv2→v3 proxy or capture path upgrade ([#90](https://github.com/sipcapture/homer5-docker/issues/90)).
+- **CI / image builds:** GitHub Actions workflow `.github/workflows/docker.yml` validates compose files and builds core images on `master` ([#3](https://github.com/sipcapture/homer5-docker/issues/3), [#49](https://github.com/sipcapture/homer5-docker/issues/49)).
 
 ----
 

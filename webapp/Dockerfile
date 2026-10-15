@@ -11,13 +11,13 @@ ENV BUILD_DATE 2018-08-12
 # Update and upgrade apt
 RUN apt-get update -qq
 # RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends --no-install-suggests -yqq ca-certificates apache2 libapache2-mod-php5 php5 php5-cli php5-gd php-pear php5-dev php5-mysql php5-json php-services-json git wget pwgen perl libdbi-perl libclass-dbi-mysql-perl && rm -rf /var/lib/apt/lists/*
+RUN apt-get install --no-install-recommends --no-install-suggests -yqq ca-certificates apache2 libapache2-mod-php5 php5 php5-cli php5-gd php-pear php5-dev php5-mysql php5-json php-services-json git wget pwgen perl libdbi-perl libclass-dbi-mysql-perl curl tzdata && rm -rf /var/lib/apt/lists/*
 RUN a2enmod php5
 
 # HOMER 5
 ENV HOMER_VERSION_CACHE_BUSTER arbitrary_value_0x000000d00d
 
-RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api 
+RUN git clone https://github.com/sipcapture/homer-api.git /homer-api && cd /homer-api && git checkout cae0fe0e999dcc2cc47db08f5a8b616f8800c0f4
 RUN git clone https://github.com/sipcapture/homer-ui.git /homer-ui && cd /homer-ui && git checkout 941954f20c462f89853133424775cce5c48c42ed
 
 WORKDIR /
